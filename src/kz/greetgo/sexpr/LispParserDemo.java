@@ -23,7 +23,8 @@ public class LispParserDemo
     try
     {
       LispParser.Expr sexpr = parser.parseExpr();
-      RtdmInterpreter.eval(sexpr, scope);
+      Object result = RtdmInterpreter.eval(sexpr, scope);
+      System.out.println(result);
     }
     catch (ParseException e1)
     {
