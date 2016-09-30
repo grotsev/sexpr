@@ -5,19 +5,25 @@ import kz.greetgo.sexpr.LispParser;
 import kz.greetgo.sexpr.LispParser.ParseException;
 import kz.greetgo.sexpr.LispTokenizer;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+
 public class LispParserDemo
 {
   public static void main(String args[])
   {
+    Map<String, Object> scope = new HashMap<>();
 
-    LispTokenizer tzr = new LispTokenizer(
-        "(a (b1  (b2 \"b3 \")) c (d e123))");
+    Reader r = new InputStreamReader(LispParserDemo.class.getResourceAsStream("sexpr.txt"));
+    LispTokenizer tzr = new LispTokenizer(r);
     LispParser parser = new LispParser(tzr);
 
     try
     {
-      LispParser.Expr result = parser.parseExpr();
-      System.out.println(result);
+      LispParser.Expr sexpr = parser.parseExpr();
+      RtdmInterpreter.eval(sexpr, scope);
     }
     catch (ParseException e1)
     {
