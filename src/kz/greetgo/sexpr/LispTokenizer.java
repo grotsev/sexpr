@@ -30,6 +30,7 @@ public class LispTokenizer {
   }*/
 
   public boolean isRightParenthesis() {
+    while (src.charAt(pos) <= ' ') pos++;
     return src.charAt(pos) == ')';
   }
 
@@ -66,7 +67,7 @@ public class LispTokenizer {
         }
         case 2: {
           if (ch == '"') {
-            return new Token('"', src.substring(start, ++pos));
+            return new Token('"', src.substring(start + 1, pos++));
           }
           if (ch == '\'') {
             state = 3;

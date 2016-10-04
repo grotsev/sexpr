@@ -1,41 +1,36 @@
 package kz.greetgo.sexpr;
 
-public class LispParser
-{
+public class LispParser {
   LispTokenizer tokenizer;
 
-  public LispParser(LispTokenizer input)
-  {
-    tokenizer=input;
+  public LispParser(LispTokenizer input) {
+    tokenizer = input;
   }
 
-  public class ParseException extends Exception
-  {
+  public class ParseException extends Exception {
 
   }
 
-  public interface Expr
-  {
+  public interface Expr {
     // abstract parent for Atom and ExprList
   }
 
-  public Expr parseExpr() throws ParseException
-  {
+  public Expr parseExpr() throws ParseException {
     Token token = tokenizer.next();
-    switch(token.type)
-    {
-      case '(': return parseExprList(token);
-      case '"': return new StringAtom(token.text);
-      default: return new Atom(token.text);
+    switch (token.type) {
+      case '(':
+        return parseExprList(token);
+      case '"':
+        return new StringAtom(token.text);
+      default:
+        return new Atom(token.text);
     }
   }
 
 
-  protected ExprList parseExprList(Token openParen) throws ParseException
-  {
+  protected ExprList parseExprList(Token openParen) throws ParseException {
     ExprList acc = new ExprList();
-    while(tokenizer.isRightParenthesis())
-    {
+    while (!tokenizer.isRightParenthesis()) {
       Expr element = parseExpr();
       acc.add(element);
     }
