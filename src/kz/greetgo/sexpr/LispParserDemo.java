@@ -5,39 +5,43 @@ import kz.greetgo.sexpr.LispParser;
 import kz.greetgo.sexpr.LispParser.ParseException;
 import kz.greetgo.sexpr.LispTokenizer;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LispParserDemo
-{
-  public static void main(String args[])
-  {
-    Map<String, Object> scope = new HashMap<>();
+public class LispParserDemo {
+  public static void main(String args[]) throws URISyntaxException, IOException {
+    java.net.URL url = LispParserDemo.class.getResource("sexpr.txt");
+    java.nio.file.Path resPath = java.nio.file.Paths.get(url.toURI());
+    String str = new String(java.nio.file.Files.readAllBytes(resPath), "UTF8");
+    LispTokenizer tzr = new LispTokenizer(str);
 
-    Reader r = new InputStreamReader(LispParserDemo.class.getResourceAsStream("sexpr.txt"));
-    LispTokenizer tzr = new LispTokenizer(r);
+//    for (int i = 0; i < 1000; i++) {
+//      System.out.println(tzr.next());
+//    }
+//    System.exit(0);
+
     LispParser parser = new LispParser(tzr);
 
-    try
-    {
+    Map<String, Object> scope = new HashMap<>();
+    try {
       LispParser.Expr sexpr = parser.parseExpr();
       Object result = RtdmInterpreter.eval(sexpr, scope);
       System.out.println(result);
 
       System.out.println(example());
-    }
-    catch (ParseException e1)
-    {
+    } catch (ParseException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
   }
 
   public static LispParser.Expr example() {
-    return l(a("switch"), l( l(a("="), a("name"), s("Peter")), s("SMS to client") ));
+    return l(a("switch"), l(l(a("="), a("name"), s("Peter")), s("SMS to client")));
   }
 
   public static ExprList l(LispParser.Expr... exprs) {

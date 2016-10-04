@@ -4,16 +4,14 @@ import java.io.StreamTokenizer;
 
 public class Token
 {
-  public static final int SYMBOL = StreamTokenizer.TT_WORD;
+  public static final int SYMBOL = '*';
   public int type;
   public String text;
-  public int line;
 
-  public Token(StreamTokenizer tzr)
+  public Token(int type, String text)
   {
-    this.type = tzr.ttype;
-    this.text = tzr.sval;
-    this.line = tzr.lineno();
+    this.type = type;
+    this.text = text;
   }
 
   public String toString()

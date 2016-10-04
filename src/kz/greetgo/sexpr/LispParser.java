@@ -34,7 +34,7 @@ public class LispParser
   protected ExprList parseExprList(Token openParen) throws ParseException
   {
     ExprList acc = new ExprList();
-    while(tokenizer.peekToken().type != ')')
+    while(tokenizer.isRightParenthesis())
     {
       Expr element = parseExpr();
       acc.add(element);
